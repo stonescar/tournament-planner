@@ -1,12 +1,59 @@
 # Tournament planner
 
-Tournament planner is a tool for planning and keeping scores of game or sports tournaments. It uses a Swiss pairing system where players compete agains others on their same level, based on results in the tournament.
+Tournament planner is a tool for planning and keeping scores of game or sports tournaments. It uses a Swiss pairing system where players compete against others on their same level, based on results in the tournament.
 
-## Functionality
-The 
+## About
+The program uses PostgreSQL, Virtual Box, Vagrant, Psychopg2 and Python 2.7 to create a back-end solution for managing a tournament after the Swiss model. In a Swiss model tournament players do not get knocked out, but in each round they play agains players who have the same amount of wins as they have.
+
+## Requirements
+To use the module, you first need to install the following:
+* [Python2.7](http://python.org)
+* [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
+* [Vagrant](https://www.vagrantup.com/downloads.html)
+* [GIT](https://git-scm.com/downloads) _(Recommended)_
+
+## Installation
+1. Install all software listed above.
+2. In GIT, cd to your project folder and type
+    `git clone https://github.com/udacity/fullstack-nanodegree-vm`
+3. Inside the vagrant folder, clone this repository
+    `git clone https://github.com/stonescar/tournament-planner`
+4. Type `vagrant up` to boot your virtual machine (This might take a while...)
+5. When the VM is booted, log in with `vagrant ssh`
+6. cd to the tournament planner folder with `cd /vagrant/tournament-planner`
+7. To build the data base, type `psql`, then `\i tournament.sql`
+8. Press `CTRL+D` to exit psql
+9. You can now run the example program with `python play.py` or build your project and import tournament.py
+
+## The files
+| Filename | Description
+|-|-|
+| tournament.py | Contains the functions to create new tournaments, add players, report matches, views standings etc. This is the file you must import to your project. |
+| tournament.sql | Contains all the database, table and view schemas |
+| tournament-test.py | A file to test the functionality in `tournament.py` |
+| play.py | An example of how the `tournament.py` file can be used. |
+| LICENSE | License file for this project |
+| README.md | This readme file
+
+## Functions
+A short description of the functions in `tournament.py`. Se the docstrings for more detailed information.
+* __connect()__: Sets up and returns a database connection. Edit this to fit your database
+* __deleteTournaments()__: Deletes _ALL_ tournaments
+* __deleteTournament(id)__: Deletes a tournament
+* __deleteMatches(tournament)__: Deletes all matches, or just all matches for a given tournament
+* __deletePlayers()__: Deletes _ALL_ players
+* __newTournament(name)__: Creates a new tournament
+* __countPlayers(tournament)__: Counts _ALL_ players in the database, or just those assigned to a given tournament
+* __registerPlayer(name)__: Adds a new player to the database
+* __assignPlayers(tournament, *players)__: Assigns a list of players to a tournament
+* __quicktournament(t_name, *players)__: Creates a new tournament and adds assigns players to it
+* __playerStandings(tournament)__: Returns a list of all players in a tournament, sorted by wins
+* __reportMatch(tournament, winner, loser)__: Report the outcome of a match
+* __swissPairings(tournament)__: Returns a list of pairs of players based on the Swiss model
+* __randomPairings(tournament)__: Returns a lis of random pairs of players
 
 ## The database schema
-Listed below are the tables the data is stored in and the views that hav been created to retreieve the data easily. For each table or view is an example table showing how the tables and views could look like. Values in tables in parentheses shows the value that the foreign key points to.
+Listed below are the tables the data is stored in and the views that have been created to retreieve the data easily. For each table or view is an example table showing how the tables and views could look like. Values in tables in parentheses shows the value that the foreign key points to.
 
 ### Tables
 ##### players
@@ -80,3 +127,6 @@ Shows the current standings of all tournaments. Lists all players, sorted by num
 | 2 _(Tournament 2)_ | 6 | Janet | 1 | 1 |
 | 2 _(Tournament 2)_ | 7 | Peter | 1 | 0 |
 | 2 _(Tournament 2)_ | 5 | Molly | 1 | 0 |
+
+## Licensing
+This project is licensed under the [MIT License](LICENSE).
