@@ -1,7 +1,8 @@
 --
 -- Table definitions for the tournament project.
 --
-CREATE DATABASE tournament;
+
+-- Before importing this file, create a database called 'tournament'
 
 CREATE TABLE tournaments (id SERIAL PRIMARY KEY,
                           name TEXT);
@@ -12,7 +13,8 @@ CREATE TABLE players (id SERIAL PRIMARY KEY,
 
 
 CREATE TABLE tournament_players (player INT REFERENCES players (id),
-                                 tournament INT REFERENCES tournaments (id));
+                                 tournament INT REFERENCES tournaments (id),
+                                 PRIMARY KEY (player, tournament));
 
 
 CREATE TABLE matches (id SERIAL PRIMARY KEY,
