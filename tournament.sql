@@ -1,7 +1,7 @@
 --
 -- Table definitions for the tournament project.
 --
-CREATE DATABASE tournament
+CREATE DATABASE tournament;
 
 CREATE TABLE tournaments (id SERIAL PRIMARY KEY,
                           name TEXT);
