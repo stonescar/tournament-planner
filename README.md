@@ -14,9 +14,9 @@ To use the module, you first need to install the following:
 
 ## Installation
 1. Install all software listed above.
-2. In GIT, cd to your project folder and type
+2. In GIT, cd to your project folder and type<br>
     `git clone https://github.com/udacity/fullstack-nanodegree-vm`
-3. Inside the vagrant folder, clone this repository
+3. Inside the vagrant folder, clone this repository<br>
     `git clone https://github.com/stonescar/tournament-planner`
 4. Type `vagrant up` to boot your virtual machine (This might take a while...)
 5. When the VM is booted, log in with `vagrant ssh`
@@ -26,14 +26,14 @@ To use the module, you first need to install the following:
 9. You can now run the example program with `python play.py` or build your project and import tournament.py
 
 ## The files
-| Filename | Description
+| Filename | Description |
 |-|-|
 | tournament.py | Contains the functions to create new tournaments, add players, report matches, views standings etc. This is the file you must import to your project. |
 | tournament.sql | Contains all the database, table and view schemas |
 | tournament-test.py | A file to test the functionality in `tournament.py` |
 | play.py | An example of how the `tournament.py` file can be used. |
 | LICENSE | License file for this project |
-| README.md | This readme file
+| README.md | This readme file |
 
 ## Functions
 A short description of the functions in `tournament.py`. Se the docstrings for more detailed information.
@@ -58,6 +58,7 @@ Listed below are the tables the data is stored in and the views that have been c
 ### Tables
 ##### players
 Holds the unique `id` of the player as a primary key, and the player's `name` as a text value.
+
 | id | name |
 |-|-|
 | 1 | Steinar |
@@ -70,6 +71,7 @@ Holds the unique `id` of the player as a primary key, and the player's `name` as
 
 #### tournaments
 Holds the unique `id` of the tournament as a primary key, and the tournament `name` as a text value:
+
 | id | name |
 |-|-|
 | 1 | myTournament |
@@ -77,6 +79,7 @@ Holds the unique `id` of the tournament as a primary key, and the tournament `na
 
 #### tournament_players
 Assigns players to tournaments. `player` references to the `id` field in the players table, and `tournament` references to the `id` in the tournaments table. This way a user can be in many different tournaments.
+
 | tournament | player |
 |-|-|
 | 1 _(myTournament)_ | 1 _(Steinar)_ |
@@ -90,6 +93,7 @@ Assigns players to tournaments. `player` references to the `id` field in the pla
 
 #### matches
 Stores results of matches in all tournaments. Hold the unique `id` of the match as a primary key, `tournament` references to the `id` field in the tournament table and tells which tournement the match was part of, while `winner` and `loser` references to the `id` field in the players table representing the two players in the match, where the winner of the match is set as `winner`.
+
 | id | tournament | winner | loser |
 |-|-|-|-|
 | 1 | 1 _(myTournament)_ | 1 _(Steinar)_ | 4 _(Steve)_ |
@@ -103,6 +107,7 @@ Stores results of matches in all tournaments. Hold the unique `id` of the match 
 #### player_matches
 Temporary view that lists _all_ matches for all players. So all the matches a player has played will be listed in this view and connected to his id and name. `tournament` references to the `id` field of the tournaments table for later sorting and selecting. `id` and `name` references to the player's id and name in the players table. `winner` and `loser` holds the ids of the player in the match, with `winner` showing who won.
 This view is only used for further selecting, sorting and grouping, i.e. in the standings view.
+
 | tournament | id | name | winner | loser |
 |-|-|-|-|-|
 | 1 _(myTournament)_ | 1 | Steinar | 1 | 4 _(Steve)_ |
@@ -112,11 +117,12 @@ This view is only used for further selecting, sorting and grouping, i.e. in the 
 | 1 _(myTournament)_ | 3 | Rachel | 1 _(Steinar)_ | 3 |
 | 1 _(myTournament)_ | 3 | Rachel | 3 | 2 _(Mike)_ |
 | ... | ... | ... | ... | ... |
-| 2 _(Tournament 2)_ | 3 | Rachel | 3 | 7 _(Peter)_
+| 2 _(Tournament 2)_ | 3 | Rachel | 3 | 7 _(Peter)_ |
 | ... | ... | ... | ... | ... |
 
 #### standings
 Shows the current standings of all tournaments. Lists all players, sorted by number of wins. Includes `tournament` (`id` of tournament), `id` (player's `id`), `name` (player's `name`), `matches` (the total number of matches the player has played) and `wins` (the total number of matches the player has won. Use `...WHERE tournament = [tournament-id]` to only show standings for one tournament.
+
 | tournament | id | name | matches | wins |
 |-|-|-|-|-|
 | 1 _(myTournament)_ | 1 | Steinar | 2 | 2 |
