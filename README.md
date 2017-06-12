@@ -21,9 +21,10 @@ To use the module, you first need to install the following:
 4. Type `vagrant up` to boot your virtual machine (This might take a while...)
 5. When the VM is booted, log in with `vagrant ssh`
 6. cd to the tournament planner folder with `cd /vagrant/tournament-planner`
-7. To build the data base, type `psql`, then `\i tournament.sql`
-8. Press `CTRL+D` to exit psql
-9. You can now run the example program with `python play.py` or build your project and import tournament.py
+7. To build the database, type `psql`, then `CREATE DATABASE tournament`
+8. Import tables and views with `\i tournament.sql`
+9. Press `CTRL+D` to exit psql
+10. You can now run the example program with `python play.py` or build your project and import tournament.py
 
 ## The files
 | Filename | Description |
