@@ -41,11 +41,20 @@ def deleteTournament(id):
     db.close()
 
 
-def deleteMatches():
-    """Remove all the match records from the database."""
+def deleteMatches(tournament=None):
+    """Remove all the match records from the database.
+
+    Args:
+      tournament (optional): id of tournament.
+                             Delete only matches from this tournament
+    """
     db = connect()
     c = db.cursor()
-    c.execute("DELETE FROM matches")
+    if tournament:
+        tournament = bleach.clean(tournament)
+        c.execute("DELETE FROM matches WHERE tournament = %s", (tournament,))
+    else:
+        c.execute("DELETE FROM matches")
     db.commit()
     db.close()
 
