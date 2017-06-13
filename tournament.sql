@@ -2,7 +2,10 @@
 -- Table definitions for the tournament project.
 --
 
--- Before importing this file, create a database called 'tournament'
+DROP DATABASE IF EXISTS tournament;
+CREATE DATABASE tournament;
+\c tournament
+
 
 CREATE TABLE tournaments (id SERIAL PRIMARY KEY,
                           name TEXT);
