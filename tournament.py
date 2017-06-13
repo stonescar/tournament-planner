@@ -17,7 +17,7 @@ def deleteTournaments():
     """Remove all the tournament records from the database"""
     db = connect()
     c = db.cursor()
-    c.execute("DELETE FROM tournaments")
+    c.execute("TRUNCATE tournaments CASCADE")
     db.commit()
     db.close()
 
@@ -54,7 +54,7 @@ def deleteMatches(tournament=None):
         tournament = bleach.clean(tournament)
         c.execute("DELETE FROM matches WHERE tournament = %s", (tournament,))
     else:
-        c.execute("DELETE FROM matches")
+        c.execute("TRUNCATE matches")
     db.commit()
     db.close()
 
@@ -63,8 +63,7 @@ def deletePlayers():
     """Remove all the player records from the database."""
     db = connect()
     c = db.cursor()
-    c.execute("DELETE FROM tournament_players")
-    c.execute("DELETE FROM players")
+    c.execute("TRUNCATE players CASCADE")
     db.commit()
     db.close()
 
