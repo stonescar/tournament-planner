@@ -232,12 +232,8 @@ def swissPairings(tournament):
         id2: the second player's unique id
         name2: the second player's name
     """
-    tournament = bleach.clean(tournament)
-    db = connect()
-    c = db.cursor()
-    c.execute("""SELECT id, name FROM standings
-                 WHERE tournament = %s""", (tournament,))
-    players = [(int(row[0]), str(row[1])) for row in c.fetchall()]
+    standings = playerStandings(tournament)
+    players = [(int(row[0]), str(row[1])) for row in standings]
     pairs = []
     while players:
         p1 = players.pop(0)
@@ -261,12 +257,8 @@ def randomPairings(tournament):
         id2: the second player's unique id
         name2: the second player's name
     """
-    tournament = bleach.clean(tournament)
-    db = connect()
-    c = db.cursor()
-    c.execute("""SELECT id, name FROM standings
-                 WHERE tournament = %s""", (tournament,))
-    players = [(int(row[0]), str(row[1])) for row in c.fetchall()]
+    standings = playerStandings(tournament)
+    players = [(int(row[0]), str(row[1])) for row in standings]
     pairs = []
     while players:
         p1 = players.pop(randrange(len(players)))
