@@ -8,15 +8,19 @@ import bleach
 from random import randrange
 
 
-def connect():
+def connect(database_name="tournament"):
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+        db = psycopg2.connect("dbname={}".format(database_name))
+        cursor = db.cursor()
+        return db, cursor
+    except:
+        print("<error message>")
 
 
 def deleteTournaments():
     """Remove all the tournament records from the database"""
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("TRUNCATE tournaments CASCADE")
     db.commit()
     db.close()
@@ -32,8 +36,7 @@ def deleteTournament(id):
       id: the id of the tournament to be deleted
     """
     id = bleach.clean(id)
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("DELETE FROM matches WHERE tournament = %s", (id,))
     c.execute("DELETE FROM tournament_players WHERE tournament = %s", (id,))
     c.execute("DELETE FROM tournaments WHERE id = %s", (id,))
@@ -48,8 +51,7 @@ def deleteMatches(tournament=None):
       tournament (optional): id of tournament.
                              Delete only matches from this tournament
     """
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     if tournament:
         tournament = bleach.clean(tournament)
         c.execute("DELETE FROM matches WHERE tournament = %s", (tournament,))
@@ -61,8 +63,7 @@ def deleteMatches(tournament=None):
 
 def deletePlayers():
     """Remove all the player records from the database."""
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("TRUNCATE players CASCADE")
     db.commit()
     db.close()
@@ -78,8 +79,7 @@ def newTournament(name):
       the new tournament's id
     """
     name = bleach.clean(name)
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("""INSERT INTO tournaments (name)
                  VALUES (%s) RETURNING id""", (name,))
     t_id = c.fetchone()[0]
@@ -95,10 +95,8 @@ def countPlayers(tournament=None):
       tournament (optional): return the number of players only
                              for the given tournament
     """
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     if tournament:
-        tournament = bleach.clean(tournament)
         c.execute("""SELECT count(*) FROM tournament_players
                      WHERE tournament = %s""", (tournament,))
     else:
@@ -118,8 +116,7 @@ def registerPlayer(name):
       the id of the new player
     """
     name = bleach.clean(name)
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("""INSERT INTO players (name)
                  VALUES (%s) RETURNING id""", (name,))
     p_id = c.fetchone()[0]
@@ -138,13 +135,10 @@ def assignPlayers(tournament, *players):
                 Ex1: assignPlayers(t1, p1, p2, p3, p4, ...)
                 Ex2: assignPlayers(t1, [p1, p2, p3, p4, ...])
     """
-    tournament = bleach.clean(tournament)
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     if type(players[0]) is list and len(players) == 1:
         players = players[0]
     for p in players:
-        p = bleach.clean(p)
         c.execute("""INSERT INTO tournament_players (tournament, player)
                      VALUES (%s, %s)""", (tournament, p,))
     db.commit()
@@ -163,9 +157,11 @@ def quickTournament(t_name, *players):
     Returns:
       the id of the new tournament
     """
+    t_name = bleach.clean(t_name)
     t = newTournament(t_name)
     p = []
     for player in players:
+        player = bleach.clean(player)
         p.append(registerPlayer(player))
     assignPlayers(t, p)
     return t
@@ -184,9 +180,7 @@ def playerStandings(tournament):
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-    tournament = bleach.clean(tournament)
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("""SELECT id, name, wins, matches FROM standings
                  WHERE tournament = %s""", (tournament,))
     standings = [(int(row[0]), str(row[1]),
@@ -203,11 +197,7 @@ def reportMatch(tournament, winner, loser):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
-    tournament = bleach.clean(tournament)
-    winner = bleach.clean(winner)
-    loser = bleach.clean(loser)
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("""INSERT INTO matches (tournament, winner, loser)
                  VALUES (%s, %s, %s)""", (tournament, winner, loser,))
     db.commit()

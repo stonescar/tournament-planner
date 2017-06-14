@@ -98,8 +98,7 @@ def printRandom(t):
 def get_t_name(t):
     """Returns the player's name from id, if found"""
     t = bleach.clean(t)
-    db = connect()
-    c = db.cursor()
+    db, c = connect()
     c.execute("SELECT name FROM tournaments WHERE id = %s", (t,))
     if c.rowcount > 0:
         name = c.fetchone()[0]
